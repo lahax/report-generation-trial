@@ -2,15 +2,15 @@ package report_dettaglio;
 
 import org.apache.poi.ss.usermodel.*;
 
-class ExcelStyleUtils extends ReportDettaglio{
+class ExcelStyleUtils extends ReportDettaglio {
     static CellStyle createTitleStyle(Workbook workbook, Font whiteBoldFont) {
-        CellStyle headerStyle = workbook.createCellStyle();
-        headerStyle.setFont(whiteBoldFont);
-        headerStyle.setFillForegroundColor(IndexedColors.DARK_TEAL.getIndex());
-        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        headerStyle.setAlignment(HorizontalAlignment.CENTER);
-        headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-        return headerStyle;
+        CellStyle titleStyle = workbook.createCellStyle();
+        titleStyle.setFont(whiteBoldFont);
+        titleStyle.setFillForegroundColor(IndexedColors.DARK_TEAL.getIndex());
+        titleStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        titleStyle.setAlignment(HorizontalAlignment.CENTER);
+        titleStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        return titleStyle;
     }
 
     static CellStyle createWhiteStyle(Workbook workbook) {
@@ -110,7 +110,7 @@ class ExcelStyleUtils extends ReportDettaglio{
         return blackBoldFont;
     }
 
-    static Font createWhiteFont(Workbook workbook){
+    static Font createWhiteFont(Workbook workbook) {
         Font whiteFont = workbook.createFont();
         whiteFont.setFontName("Arial");
         whiteFont.setColor(IndexedColors.WHITE.getIndex());

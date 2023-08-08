@@ -36,14 +36,14 @@ public class ReportDettaglio {
                 95.00
         );
 
-        ArrayList<SummaryReportMetricDescription> telemetryReportMetricDescription = new ArrayList<SummaryReportMetricDescription>();
+        ArrayList<SummaryReportMetricDescription> telemetryReportMetricDescription = new ArrayList<>();
         telemetryReportMetricDescription.add(new SummaryReportMetricDescription("Corrente di Schermo Fase 4", 200, 187, true));
         telemetryReportMetricDescription.add(new SummaryReportMetricDescription("Corrente di Schermo Fase 8", 200, 198, true));
         telemetryReportMetricDescription.add(new SummaryReportMetricDescription("Corrente di Schermo Fase 12", 278, 147, false));
 
         SummaryReportData telemetryReportData = new SummaryReportData(678, 532, telemetryReportMetricDescription, false);
 
-        ArrayList<SummaryReportMetricDescription> telesignalReportMetricDescription = new ArrayList<SummaryReportMetricDescription>();
+        ArrayList<SummaryReportMetricDescription> telesignalReportMetricDescription = new ArrayList<>();
         telesignalReportMetricDescription.add(new SummaryReportMetricDescription("Aggregato Allarme Pressione Olio Cavo Bassa", 200, 184, true));
         telesignalReportMetricDescription.add(new SummaryReportMetricDescription("Aggregato Allarme Pressione Olio Cavo Bassissima", 300, 289, true));
         telesignalReportMetricDescription.add(new SummaryReportMetricDescription("Aggregato Allarme Pressione Olio Cavo Alta", 100, 99, true));
@@ -96,34 +96,56 @@ public class ReportDettaglio {
 
         addWhiteLine(sheet, 15);
 
-        //TODO: implementare la logica per cui se ci sono zero telemisure quella parte di report non viene generata, idem per i telesegnali (basta usare testPointInfo.telemetryQuantity etc)
+        int rowIndex = 16;
 
-        addTitle(sheet, 16, "Quantità Dati - Telemisure");
-        addDetailsHeader(sheet, 17, "Dati campo", "Dal centro", "Ricevuti", "Esito");
-        addQuantityData(sheet, 18, telemetrySummary, testPointInfo.getTelemetryThreshold());
+        if (!testPointInfo.getTelemetryQuantity().equals(0)) {
+            addTitle(sheet, rowIndex, "Quantità Dati - Telemisure");
+            rowIndex++;
+            addDetailsHeader(sheet, rowIndex, "Dati campo", "Dal centro", "Ricevuti", "Esito");
+            rowIndex++;
+            addQuantityData(sheet, rowIndex, telemetrySummary, testPointInfo.getTelemetryThreshold());
+            rowIndex++;
+            addWhiteLine(sheet, rowIndex);
+            rowIndex++;
+        }
 
-        addWhiteLine(sheet, 19);
+        if (!testPointInfo.getTeleSignalQuantity().equals(0)) {
+            addTitle(sheet, rowIndex, "Quantità Dati - Telesegnali");
+            rowIndex++;
+            addDetailsHeader(sheet, rowIndex, "Dati campo", "Dal centro", "Ricevuti", "Esito");
+            rowIndex++;
+            addQuantityData(sheet, rowIndex, telesignalSummary, testPointInfo.getTeleSignalThreshold());
+            rowIndex++;
+            addWhiteLine(sheet, rowIndex);
+            rowIndex++;
+        }
 
-        addTitle(sheet, 20, "Quantità Dati - Telesegnali");
-        addDetailsHeader(sheet, 21, "Dati campo", "Dal centro", "Ricevuti", "Esito");
-        addQuantityData(sheet, 22, telesignalSummary, testPointInfo.getTeleSignalThreshold());
+        if (!testPointInfo.getTelemetryQuantity().equals(0)) {
+            addTitle(sheet, rowIndex, "Coerenza Dati - Telemisure");
+            rowIndex++;
+            addDetailsHeader(sheet, rowIndex, "Esaminati", "Corrispondenti", "Percentuale", "Esito");
+            rowIndex++;
+            addRecapDescriptionData(sheet, rowIndex, telemetrySummary, testPointInfo.getTelemetryThreshold());
+            rowIndex++;
+            addDetailsHeader(sheet, rowIndex, "Nome", "Descrizione", "Percentuale", "Esito");
+            rowIndex++;
+            addDescriptionData(sheet, rowIndex, telemetrySummary, testPointInfo.getTelemetryThreshold());
+            rowIndex += telemetrySummary.getMetricDescriptions().size();
+            addWhiteLine(sheet, rowIndex);
+            rowIndex++;
+        }
 
-        addWhiteLine(sheet, 23);
-
-        addTitle(sheet, 24, "Coerenza Dati - Telemisure");
-        addDetailsHeader(sheet, 25, "Esaminati", "Corrispondenti", "Percentuale", "Esito");
-        addRecapDescriptionData(sheet, 26, telemetrySummary, testPointInfo.getTelemetryThreshold());
-        addDetailsHeader(sheet, 27, "Nome", "Descrizione", "Percentuale", "Esito");
-        //da qui in poi gli indici delle righe non sono più fissi, utilizzare telemetrySummary.getMetricDescriptions().size() per capire quante celle bisogna saltare dopo
-        addDescriptionData(sheet, 28, telemetrySummary,testPointInfo.getTelemetryThreshold());
-
-        addWhiteLine(sheet, 28 + telemetrySummary.getMetricDescriptions().size());
-
-        addTitle(sheet, 29 + telemetrySummary.getMetricDescriptions().size(), "Coerenza Dati - Telesegnali");
-        addDetailsHeader(sheet, 30 + telemetrySummary.getMetricDescriptions().size(), "Esaminati", "Corrispondenti", "Percentuale", "Esito");
-        addRecapDescriptionData(sheet, 31 + telemetrySummary.getMetricDescriptions().size(), telesignalSummary, testPointInfo.getTeleSignalThreshold());
-        addDetailsHeader(sheet, 32 + telemetrySummary.getMetricDescriptions().size(), "Nome", "Descrizione", "Percentuale", "Esito");
-        addDescriptionData(sheet, 33 + telemetrySummary.getMetricDescriptions().size(), telesignalSummary,testPointInfo.getTeleSignalThreshold());
+        if (!testPointInfo.getTeleSignalQuantity().equals(0)) {
+            addTitle(sheet, rowIndex, "Coerenza Dati - Telesegnali");
+            rowIndex++;
+            addDetailsHeader(sheet, rowIndex, "Esaminati", "Corrispondenti", "Percentuale", "Esito");
+            rowIndex++;
+            addRecapDescriptionData(sheet, rowIndex, telesignalSummary, testPointInfo.getTeleSignalThreshold());
+            rowIndex++;
+            addDetailsHeader(sheet, rowIndex, "Nome", "Descrizione", "Percentuale", "Esito");
+            rowIndex++;
+            addDescriptionData(sheet, rowIndex, telesignalSummary, testPointInfo.getTeleSignalThreshold());
+        }
 
         return workbook;
     }
