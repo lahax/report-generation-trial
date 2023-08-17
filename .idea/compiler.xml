@@ -7,8 +7,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="report_generation_trial" />
+        <module name="database-service" />
+        <module name="api-service" />
+        <module name="back-end-core" />
+        <module name="data-gathering-service" />
+        <module name="data-normalization-service" />
+        <module name="data-comparison-service" />
+        <module name="report-generation-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="backendcore" target="18" />
+    </bytecodeTargetLevel>
   </component>
 </project>
