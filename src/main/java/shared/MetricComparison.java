@@ -1,8 +1,6 @@
 package shared;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 
@@ -19,13 +17,13 @@ public class MetricComparison {
 
     //dati di campo
     private Timestamp fieldTimestamp;
-    private Object fieldValue;
+    private Integer fieldValue;
     private Boolean fieldQualityCode;
     private Timestamp fieldReceivedOn;
 
     //dati dal centro (dashboard)
     private Timestamp dashboardTimestamp;
-    private Object dashboardValue;
+    private Integer dashboardValue;
     private Boolean dashboardQualityCode;
     private Timestamp dashboardReceivedOn;
 
